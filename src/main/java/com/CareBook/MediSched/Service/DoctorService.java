@@ -6,4 +6,5 @@ import com.CareBook.MediSched.Model.User;
 
 public interface DoctorService {
 
+    String decideDoctorRequest(Long doctorRequestId, String status);
 }

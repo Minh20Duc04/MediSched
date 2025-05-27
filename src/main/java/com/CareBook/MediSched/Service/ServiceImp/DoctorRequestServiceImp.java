@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,6 +53,13 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
         return doctorRequestDto;
     }
 
+    @Override
+    public List<DoctorRequestDto> getAllDoctorRequests() {
+        List<DoctorRequest> doctorRequests = doctorRequestRepository.findAll();
+        List<DoctorRequestDto> doctorRequestDtos = doctorRequests.stream().map(this::docRequestToDto).collect(Collectors.toList());
+        return doctorRequestDtos;
+    }
+
 
     private void validateRequest(DoctorRequestDto doctorRequestDto){
         try {
@@ -78,7 +86,9 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
 
     }
 
-
+    private DoctorRequestDto docRequestToDto(DoctorRequest doctorRequest){
+        return new DoctorRequestDto(doctorRequest.getId(), doctorRequest.getStatus().name(), doctorRequest.getSpecialty().name(), doctorRequest.getDaysOfWeek().stream().map(DayOfWeek::name).collect(Collectors.toList()), doctorRequest.getDepartment().getId(), doctorRequest.getStartTime(), doctorRequest.getEndTime());
+    }
 
 
 

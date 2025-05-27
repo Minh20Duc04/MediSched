@@ -50,4 +50,5 @@ public class Doctor {
     @JsonIgnore
     private List<Schedule> scheduleList;
 
+
 }
