@@ -40,6 +40,8 @@ public class Doctor {
     @JoinColumn(name = "user_id")
     private User user;
 
+    private String imageUrl;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 

@@ -5,11 +5,17 @@ import com.CareBook.MediSched.Model.*;
 import com.CareBook.MediSched.Repository.DepartmentRepository;
 import com.CareBook.MediSched.Repository.DoctorRequestRepository;
 import com.CareBook.MediSched.Service.DoctorRequestService;
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.DayOfWeek;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -19,13 +25,16 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
 
     private final DoctorRequestRepository doctorRequestRepository;
     private final DepartmentRepository departmentRepository;
+    private final Cloudinary cloudinary;
 
 
     @Override
-    public DoctorRequestDto createDoctorRequest(DoctorRequestDto doctorRequestDto, User user) {
+    public DoctorRequestDto createDoctorRequest(DoctorRequestDto doctorRequestDto, User user, MultipartFile file) {
         validateRequest(doctorRequestDto);
 
-        Specialty specialty = Specialty.valueOf(doctorRequestDto.getSpecialty().toUpperCase());
+        System.out.println("Specialty received: '" + doctorRequestDto.getSpecialty() + "'");
+        String sp = doctorRequestDto.getSpecialty().trim().toUpperCase();
+        Specialty specialty = Specialty.valueOf(sp);
 
         Department department = departmentRepository.findById(doctorRequestDto.getDepartmentId()).orElseThrow(()-> new IllegalArgumentException("This Department not exist"));
 
@@ -35,6 +44,7 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
                 .map(DayOfWeek::valueOf)
                 .collect(Collectors.toSet());
 
+        String imageUrl = uploadFile(file);
 
         DoctorRequest doctorRequest =  DoctorRequest.builder()
                 .startTime(doctorRequestDto.getStartTime())
@@ -44,6 +54,7 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
                 .specialty(specialty)
                 .department(department)
                 .daysOfWeek(days)
+                .imageUrl(imageUrl)
                 .build();
 
         DoctorRequest savedDocRequest = doctorRequestRepository.save(doctorRequest);
@@ -62,25 +73,26 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
 
 
     private void validateRequest(DoctorRequestDto doctorRequestDto){
+        String sp = doctorRequestDto.getSpecialty().trim().toUpperCase();
         try {
-            Specialty.valueOf(doctorRequestDto.getSpecialty().toUpperCase());
+            Specialty.valueOf(sp);
         } catch (IllegalArgumentException e) {
             throw new IllegalArgumentException("Invalid specialty: " + doctorRequestDto.getSpecialty());
         }
 
-        for(String day : doctorRequestDto.getDaysOfWeek()) {
+        for(String day : doctorRequestDto.getDaysOfWeek()){
             try {
                 DayOfWeek.valueOf(day.toUpperCase());
-            } catch (IllegalArgumentException e) {
+            }catch (IllegalArgumentException e){
                 throw new IllegalArgumentException("Invalid day of week: " + day);
             }
         }
 
-        if(doctorRequestDto.getStartTime() == null || doctorRequestDto.getEndTime() == null) {
+        if(doctorRequestDto.getStartTime() == null || doctorRequestDto.getEndTime() == null){
             throw new IllegalArgumentException("Start time and end time cannot be null");
         }
 
-        if(doctorRequestDto.getStartTime().isAfter(doctorRequestDto.getEndTime())) {
+        if(doctorRequestDto.getStartTime().isAfter(doctorRequestDto.getEndTime())){
             throw new IllegalArgumentException("Start time must be before end time");
         }
 
@@ -90,6 +102,13 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
         return new DoctorRequestDto(doctorRequest.getId(), doctorRequest.getStatus().name(), doctorRequest.getSpecialty().name(), doctorRequest.getDaysOfWeek().stream().map(DayOfWeek::name).collect(Collectors.toList()), doctorRequest.getDepartment().getId(), doctorRequest.getStartTime(), doctorRequest.getEndTime());
     }
 
-
+    private String uploadFile(MultipartFile file){
+        try{
+            Map uploadResult = cloudinary.uploader().upload(file.getBytes(), ObjectUtils.asMap("resource_type", "auto"));
+            return uploadResult.get("secure_url").toString();
+        }catch (IOException e){
+            throw new RuntimeException("Lỗi khi upload file: " + e.getMessage());
+        }
+    }
 
 }

@@ -2,7 +2,9 @@ package com.CareBook.MediSched.Config;
 
 import com.CareBook.MediSched.Repository.UserRepository;
 import com.CareBook.MediSched.Service.UserService;
+import com.cloudinary.Cloudinary;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -13,6 +15,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Configuration
 @RequiredArgsConstructor
@@ -42,6 +47,25 @@ public class AppConfig {
         return config.getAuthenticationManager();
     }
 
+
+    @Value("${cloud.name}")
+    private String cloudName;
+
+    @Value("${api.key}")
+    private String CloudApiKey;
+
+    @Value("${api.secret}")
+    private String apiSecret;
+
+    @Bean
+    public Cloudinary cloudinary(){
+        Map<String, Object> cloudConfig = new HashMap<>();
+        cloudConfig.put("cloud_name", cloudName);
+        cloudConfig.put("api_key", CloudApiKey);
+        cloudConfig.put("api_secret", apiSecret);
+        cloudConfig.put("secure", true);
+        return new Cloudinary(cloudConfig);
+    }
 
 
 

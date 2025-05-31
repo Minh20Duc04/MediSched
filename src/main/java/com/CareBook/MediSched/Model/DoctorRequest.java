@@ -30,6 +30,8 @@ public class DoctorRequest {
     @Enumerated(value = EnumType.STRING)
     private Specialty specialty;
 
+    private String imageUrl;
+
     @ElementCollection(targetClass = DayOfWeek.class)
     @Enumerated(value = EnumType.STRING)
     private Set<DayOfWeek> daysOfWeek;

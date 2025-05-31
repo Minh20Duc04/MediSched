@@ -1,17 +1,17 @@
 package com.CareBook.MediSched.Service.ServiceImp;
 
-import com.CareBook.MediSched.Model.Doctor;
-import com.CareBook.MediSched.Model.DoctorRequest;
-import com.CareBook.MediSched.Model.Role;
-import com.CareBook.MediSched.Model.Status;
+import com.CareBook.MediSched.Dto.DoctorDecisionDto;
+import com.CareBook.MediSched.Model.*;
 import com.CareBook.MediSched.Repository.DoctorRepository;
 import com.CareBook.MediSched.Repository.DoctorRequestRepository;
 import com.CareBook.MediSched.Repository.ScheduleRepository;
+import com.CareBook.MediSched.Repository.UserRepository;
 import com.CareBook.MediSched.Service.DoctorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.HashSet;
 
 @Service
 @RequiredArgsConstructor
@@ -21,14 +21,15 @@ public class DoctorServiceImp implements DoctorService {
     private final DoctorRepository doctorRepository;
     private final DoctorRequestRepository doctorRequestRepository;
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
 
     @Override
-    public String decideDoctorRequest(Long doctorRequestId, String status) {
-        DoctorRequest doctorRequest = doctorRequestRepository.findById(doctorRequestId).orElseThrow(()-> new RuntimeException("Can't find this doctor request"));
+    public String decideDoctorRequest(DoctorDecisionDto decisionDto){
+        DoctorRequest doctorRequest = doctorRequestRepository.findById(decisionDto.getDoctorRequestId()).orElseThrow(()-> new RuntimeException("Can't find this doctor request"));
         Status seekStatus;
-        try {
-            seekStatus = Status.valueOf(status.toUpperCase());
+        try{
+            seekStatus = Status.valueOf(decisionDto.getStatus());
         }catch (IllegalArgumentException e){
             throw new IllegalArgumentException("Invalid status");
         }
@@ -45,17 +46,31 @@ public class DoctorServiceImp implements DoctorService {
                     .role(Role.DOCTOR)
                     .department(doctorRequest.getDepartment())
                     .user(doctorRequest.getUser())
+                    .imageUrl(doctorRequest.getImageUrl())
                     .build();
             doctorRepository.save(createDoctor);
 
             doctorRequest.setStatus(Status.APPROVED);
             doctorRequestRepository.save(doctorRequest);
+
+            User user = userRepository.findById(doctorRequest.getUser().getId()).orElseThrow();
+            user.setRole(createDoctor.getRole());
+            userRepository.save(user);
+
+            Schedule createSchedule = Schedule.builder()
+                    .doctor(createDoctor)
+                    .daysOfWeek(new HashSet<>(doctorRequest.getDaysOfWeek()))
+                    .startTime(doctorRequest.getStartTime())
+                    .endTime(doctorRequest.getEndTime())
+                    .build();
+
+            scheduleRepository.save(createSchedule);
             return "Doctor request approved successfully";
         }
         else if(seekStatus == Status.PENDING){
             return "Doctor request is still pending";
         }
-        else {
+        else{
             doctorRequest.setStatus(Status.REJECTED);
             doctorRequestRepository.save(doctorRequest);
             return "Doctor request rejected.";
