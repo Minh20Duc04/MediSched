@@ -8,4 +8,6 @@ import com.CareBook.MediSched.Model.User;
 public interface DoctorService {
 
     String decideDoctorRequest(DoctorDecisionDto decisionDto);
+
+    Doctor findByDoctorName(String name);
 }

@@ -2,6 +2,7 @@ package com.CareBook.MediSched.Controller;
 
 import com.CareBook.MediSched.Dto.DoctorDecisionDto;
 import com.CareBook.MediSched.Dto.DoctorRequestDto;
+import com.CareBook.MediSched.Model.Doctor;
 import com.CareBook.MediSched.Model.DoctorRequest;
 import com.CareBook.MediSched.Model.User;
 import com.CareBook.MediSched.Service.DoctorRequestService;
@@ -63,5 +64,9 @@ public class DoctorController {
 
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Doctor> findByDoctorName(@RequestParam String name){
+        return ResponseEntity.ok(doctorService.findByDoctorName(name));
+    }
 
 }
