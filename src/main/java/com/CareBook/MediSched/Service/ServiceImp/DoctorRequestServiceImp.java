@@ -72,7 +72,7 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
     }
 
 
-    private void validateRequest(DoctorRequestDto doctorRequestDto){
+    public void validateRequest(DoctorRequestDto doctorRequestDto){
         String sp = doctorRequestDto.getSpecialty().trim().toUpperCase();
         try {
             Specialty.valueOf(sp);

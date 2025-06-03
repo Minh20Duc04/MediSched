@@ -10,4 +10,6 @@ public interface DoctorService {
     String decideDoctorRequest(DoctorDecisionDto decisionDto);
 
     Doctor findByDoctorName(String name);
+
+    String updateDoctor(Long doctorId, DoctorRequestDto doctorRequestDto);
 }

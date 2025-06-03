@@ -61,7 +61,7 @@ public class DoctorController {
 
     @PutMapping("/update/{doctorId}")
     public ResponseEntity<String> updateDoctor(@RequestBody DoctorRequestDto doctorRequestDto, @PathVariable(name = "doctorId") Long doctorId){
-
+        return ResponseEntity.ok(doctorService.updateDoctor(doctorId, doctorRequestDto));
     }
 
     @GetMapping("/search")

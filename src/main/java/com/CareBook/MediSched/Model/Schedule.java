@@ -35,5 +35,4 @@ public class Schedule {
     private Set<DayOfWeek> daysOfWeek;
 
 
-
 }
