@@ -26,4 +26,9 @@ public class DoctorRequestDto {
 
     private LocalTime endTime;
 
+    private Double fee;
+
+    private String description;
+
+
 }

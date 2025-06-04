@@ -1,5 +1,6 @@
 package com.CareBook.MediSched.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -54,9 +55,11 @@ public class User implements UserDetails {
     private LocalDateTime updatedAt;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Doctor doctor;
 
     @OneToOne(mappedBy = "user")
+    @JsonIgnore
     private Patient patient;
 
     @Override

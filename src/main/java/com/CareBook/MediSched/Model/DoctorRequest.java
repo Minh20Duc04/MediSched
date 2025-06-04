@@ -48,4 +48,8 @@ public class DoctorRequest {
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    private Double fee;
+
+    private String description;
+
 }

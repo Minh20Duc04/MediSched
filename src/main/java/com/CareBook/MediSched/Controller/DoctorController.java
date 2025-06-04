@@ -1,6 +1,7 @@
 package com.CareBook.MediSched.Controller;
 
 import com.CareBook.MediSched.Dto.DoctorDecisionDto;
+import com.CareBook.MediSched.Dto.DoctorDto;
 import com.CareBook.MediSched.Dto.DoctorRequestDto;
 import com.CareBook.MediSched.Model.Doctor;
 import com.CareBook.MediSched.Model.DoctorRequest;
@@ -33,6 +34,8 @@ public class DoctorController {
             @RequestParam Long departmentId,
             @RequestParam String startTime,
             @RequestParam String endTime,
+            @RequestParam Double fee,
+            @RequestParam String description,
             @RequestParam MultipartFile file,
             Authentication authentication){
 
@@ -42,6 +45,8 @@ public class DoctorController {
                 .specialty(specialty)
                 .daysOfWeek(daysOfWeek)
                 .departmentId(departmentId)
+                .fee(fee)
+                .description(description)
                 .startTime(LocalTime.parse(startTime.replace("\"", "")))
                 .endTime(LocalTime.parse(endTime.replace("\"", "")))
                 .build();
@@ -65,8 +70,8 @@ public class DoctorController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Doctor> findByDoctorName(@RequestParam String name){
-        return ResponseEntity.ok(doctorService.findByDoctorName(name));
+    public ResponseEntity<List<DoctorDto>> findByDoctorNameOrSpecialty(@RequestParam(required = false) String name, @RequestParam(required = false) String specialty, @RequestParam(defaultValue = "0") String page){
+        return ResponseEntity.ok(doctorService.findByDoctorNameOrSpecialty(name, specialty, page));
     }
 
 }

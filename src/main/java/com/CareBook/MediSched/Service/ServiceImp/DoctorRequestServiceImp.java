@@ -54,6 +54,8 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
                 .specialty(specialty)
                 .department(department)
                 .daysOfWeek(days)
+                .fee(doctorRequestDto.getFee())
+                .description(doctorRequestDto.getDescription())
                 .imageUrl(imageUrl)
                 .build();
 
@@ -96,10 +98,13 @@ public class DoctorRequestServiceImp implements DoctorRequestService {
             throw new IllegalArgumentException("Start time must be before end time");
         }
 
+        if(doctorRequestDto.getFee().equals(null)  || doctorRequestDto.getFee() <= 100000){
+            throw new IllegalArgumentException("Invalid fee");
+        }
     }
 
     private DoctorRequestDto docRequestToDto(DoctorRequest doctorRequest){
-        return new DoctorRequestDto(doctorRequest.getId(), doctorRequest.getStatus().name(), doctorRequest.getSpecialty().name(), doctorRequest.getDaysOfWeek().stream().map(DayOfWeek::name).collect(Collectors.toList()), doctorRequest.getDepartment().getId(), doctorRequest.getStartTime(), doctorRequest.getEndTime());
+        return new DoctorRequestDto(doctorRequest.getId(), doctorRequest.getStatus().name(), doctorRequest.getSpecialty().name(), doctorRequest.getDaysOfWeek().stream().map(DayOfWeek::name).collect(Collectors.toList()), doctorRequest.getDepartment().getId(), doctorRequest.getStartTime(), doctorRequest.getEndTime(), doctorRequest.getFee(), doctorRequest.getDescription());
     }
 
     private String uploadFile(MultipartFile file){

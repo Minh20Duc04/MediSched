@@ -1,15 +1,18 @@
 package com.CareBook.MediSched.Service.ServiceImp;
 
 import com.CareBook.MediSched.Dto.DoctorDecisionDto;
+import com.CareBook.MediSched.Dto.DoctorDto;
 import com.CareBook.MediSched.Dto.DoctorRequestDto;
 import com.CareBook.MediSched.Model.*;
 import com.CareBook.MediSched.Repository.*;
 import com.CareBook.MediSched.Service.DoctorService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.DayOfWeek;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -49,6 +52,8 @@ public class DoctorServiceImp implements DoctorService {
                     .role(Role.DOCTOR)
                     .department(doctorRequest.getDepartment())
                     .user(doctorRequest.getUser())
+                    .fee(doctorRequest.getFee())
+                    .description(doctorRequest.getDescription())
                     .imageUrl(doctorRequest.getImageUrl())
                     .build();
             doctorRepository.save(createDoctor);
@@ -78,12 +83,6 @@ public class DoctorServiceImp implements DoctorService {
             doctorRequestRepository.save(doctorRequest);
             return "Doctor request rejected.";
         }
-    }
-
-    @Override
-    public Doctor findByDoctorName(String name) {//tim theo ten, tim theo chuyen khoa, sua lai kieu tra ve
-        Doctor docDB = doctorRepository.findByFullName(name).orElseThrow(()-> new IllegalArgumentException("Can not find doctor by "+name));
-        return docDB;
     }
 
     @Override
@@ -140,19 +139,39 @@ public class DoctorServiceImp implements DoctorService {
         return "Update doctor successfully";
     }
 
+    @Override
+    public List<DoctorDto> findByDoctorNameOrSpecialty(String name, String specialty, String page) {
+        if(name != null && !name.trim().toLowerCase().isEmpty()){
+            name = name.trim().toLowerCase();
+        }else {
+            name = null;
+        }
+        if(specialty != null && !specialty.trim().isEmpty()){
+            try {
+                Specialty.valueOf(specialty);
+                specialty = specialty.trim().toUpperCase();
+            }catch (IllegalArgumentException e){
+                specialty = null;
+            }
+        }
+        Pageable pageable = PageRequest.of(Integer.parseInt(page), 10, Sort.by("fullName").ascending());
 
+        List<Doctor> doctors = doctorRepository.searchDoctors(name,specialty,pageable).getContent();
 
+        return doctors.stream().map(this::mapToDocDto).collect(Collectors.toList());
+    }
 
-
-
-
-
-
-
-
-
-
-
-
+    private DoctorDto mapToDocDto(Doctor doctor) {
+        return new DoctorDto(
+                doctor.getId(),
+                doctor.getFullName(),
+                doctor.getSpecialty().name(),
+                doctor.getDepartment(),
+                doctor.getUser().getEmail(),
+                doctor.getImageUrl(),
+                doctor.getFee(),
+                doctor.getDescription(),
+                doctor.getRole().name());
+    }
 
 }
