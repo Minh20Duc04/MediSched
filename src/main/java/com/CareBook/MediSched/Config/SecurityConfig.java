@@ -31,17 +31,20 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/user/register",
                                 "/user/login",
-                                "/doctor/search"
-                                ).permitAll()
+                                "/doctor/search",
+                                "/appointment/available-slots"
+                        ).permitAll()
                         .requestMatchers("/doctor/request").hasRole("USER")
                         .requestMatchers(
                                 "/doctor/get-all-requests",
                                 "/doctor/decide-request",
                                 "/doctor/update/**",
                                 "/department/createDepartment",
-                                "/appointment/available-slots"
+                                "/patient/delete/**"
                                 ).hasRole("ADMIN")
+                        .requestMatchers("/patient/update/**").hasAnyRole("ADMIN", "PATIENT")
                         .requestMatchers("/appointment/book").hasAnyRole("USER", "PATIENT")
+                        .requestMatchers("/patient/get-all").hasAnyRole("ADMIN", "DOCTOR")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager-> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

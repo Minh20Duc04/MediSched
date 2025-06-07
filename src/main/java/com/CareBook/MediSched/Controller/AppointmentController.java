@@ -31,6 +31,8 @@ public class AppointmentController {
         return ResponseEntity.ok(appointmentService.bookAppointment(appointmentDto, user));
     }
 
+    @PutMapping("/update")
+    public
 
 
 
