@@ -13,6 +13,5 @@ public interface AppointmentService {
     AppointmentDto bookAppointment(AppointmentDto appointmentDto, User user);
 
 
-
-
+    List<AppointmentDto> getAllByDoc(User user);
 }

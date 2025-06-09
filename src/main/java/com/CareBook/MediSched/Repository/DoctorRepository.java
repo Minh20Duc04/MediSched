@@ -1,6 +1,7 @@
 package com.CareBook.MediSched.Repository;
 
 import com.CareBook.MediSched.Model.Doctor;
+import com.CareBook.MediSched.Model.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,4 +23,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Long> {
             "WHERE (:name IS NULL OR LOWER(d.fullName) LIKE LOWER(CONCAT('%', :name, '%'))) " +
             "AND (:specialty IS NULL OR LOWER(d.specialty) LIKE LOWER(CONCAT('%', :specialty, '%')))")
     Page<Doctor> searchDoctors(@Param(value = "name") String name,@Param(value = "specialty") String specialty, Pageable pageable);
+
+    Optional<Doctor> findByUser(User user);
 }

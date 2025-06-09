@@ -32,7 +32,8 @@ public class SecurityConfig {
                                 "/user/register",
                                 "/user/login",
                                 "/doctor/search",
-                                "/appointment/available-slots"
+                                "/appointment/available-slots",
+                                "/review/get-all/**"
                         ).permitAll()
                         .requestMatchers("/doctor/request").hasRole("USER")
                         .requestMatchers(
@@ -40,11 +41,13 @@ public class SecurityConfig {
                                 "/doctor/decide-request",
                                 "/doctor/update/**",
                                 "/department/createDepartment",
-                                "/patient/delete/**"
+                                "/patient/delete/**",
+                                "/getBy-doctor"
                                 ).hasRole("ADMIN")
                         .requestMatchers("/patient/update/**").hasAnyRole("ADMIN", "PATIENT")
                         .requestMatchers("/appointment/book").hasAnyRole("USER", "PATIENT")
                         .requestMatchers("/patient/get-all").hasAnyRole("ADMIN", "DOCTOR")
+                        .requestMatchers("/review/evaluate").hasRole("PATIENT")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager-> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

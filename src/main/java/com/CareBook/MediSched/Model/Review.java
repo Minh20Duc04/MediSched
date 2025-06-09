@@ -1,11 +1,10 @@
 package com.CareBook.MediSched.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 @Entity
 @AllArgsConstructor
@@ -13,29 +12,27 @@ import java.time.LocalTime;
 @Setter
 @Getter
 @Builder
-@Table(name = "appointment")
-public class Appointment {
+@Table(name = "review")
+public class Review {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDate appointmentDate;
+    private String comment;
 
-    private LocalTime appointmentTime;
+    private Integer rating; // số sao từ 1 -> 5
 
-    @Enumerated(value = EnumType.STRING)
-    private Status status;
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "patient_id")
-    @JsonIgnore
     private Patient patient;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "doctor_id")
-    @JsonIgnore
     private Doctor doctor;
 
-    private String note;
+
 }

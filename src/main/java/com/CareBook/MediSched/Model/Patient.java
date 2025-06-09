@@ -54,4 +54,7 @@ public class Patient {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "patient")
     private List<Appointment> appointments;
 
+    @OneToMany(mappedBy = "patient",cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
 }
