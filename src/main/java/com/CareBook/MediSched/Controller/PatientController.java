@@ -35,4 +35,9 @@ public class PatientController {
         return ResponseEntity.ok(patientService.deletePatient(patientId));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<PatientDto> getPatientProfile(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(patientService.getPatientProfile(user));
+    }
 }

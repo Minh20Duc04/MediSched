@@ -74,4 +74,15 @@ public class DoctorController {
         return ResponseEntity.ok(doctorService.findByDoctorNameOrSpecialty(name, specialty, page));
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<DoctorDto> getDoctorProfile(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return ResponseEntity.ok(doctorService.getDoctorProfile(user));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DoctorDto> getDoctorById(@PathVariable Long id) {
+        return ResponseEntity.ok(doctorService.getDoctorById(id));
+    }
+
 }

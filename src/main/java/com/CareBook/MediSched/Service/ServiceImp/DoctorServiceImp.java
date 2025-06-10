@@ -161,6 +161,16 @@ public class DoctorServiceImp implements DoctorService {
         return doctors.stream().map(this::mapToDocDto).collect(Collectors.toList());
     }
 
+    @Override
+    public DoctorDto getDoctorProfile(User user) {
+        return mapToDocDto(user.getDoctor());
+    }
+
+    @Override
+    public DoctorDto getDoctorById(Long id) {
+        return mapToDocDto(doctorRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("Doctor not found")));
+    }
+
     private DoctorDto mapToDocDto(Doctor doctor) {
         return new DoctorDto(
                 doctor.getId(),

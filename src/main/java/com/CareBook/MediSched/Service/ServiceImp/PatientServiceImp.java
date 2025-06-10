@@ -49,6 +49,11 @@ public class PatientServiceImp implements PatientService {
         return "Delete patient successfully";
     }
 
+    @Override
+    public PatientDto getPatientProfile(User user) {
+        return patientToDto(user.getPatient());
+    }
+
 
     private PatientDto patientToDto(Patient patient) {
         return new PatientDto(patient.getFirstName(), patient.getLastName(), patient.getEmail(), patient.getUsername(), patient.getPhoneNumber(), patient.getAddress(), patient.getDob());

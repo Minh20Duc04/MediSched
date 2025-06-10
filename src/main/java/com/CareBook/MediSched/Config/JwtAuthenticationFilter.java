@@ -24,7 +24,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
-        if(path.startsWith("/user/register") || path.startsWith("/user/login")){
+        if(path.startsWith("/user/register") || path.startsWith("/user/login") || path.startsWith("/user/forgot-password")){
             filterChain.doFilter(request, response);
             return;
         }

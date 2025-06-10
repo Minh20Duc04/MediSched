@@ -27,7 +27,7 @@ public class Appointment {
     @Enumerated(value = EnumType.STRING)
     private Status status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "patient_id")
     @JsonIgnore
     private Patient patient;
@@ -38,4 +38,7 @@ public class Appointment {
     private Doctor doctor;
 
     private String note;
+
+    @Enumerated(value = EnumType.STRING)
+    private PaymentMethod paymentMethod;
 }

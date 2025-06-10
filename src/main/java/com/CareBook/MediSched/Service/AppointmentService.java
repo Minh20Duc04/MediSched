@@ -14,4 +14,8 @@ public interface AppointmentService {
 
 
     List<AppointmentDto> getAllByDoc(User user);
+
+    String updateAppointment(Long appointmentId, User user, String status);
+
+    List<AppointmentDto> getAppointmentsByUser(User user);
 }

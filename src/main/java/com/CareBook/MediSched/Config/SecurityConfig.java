@@ -33,7 +33,15 @@ public class SecurityConfig {
                                 "/user/login",
                                 "/doctor/search",
                                 "/appointment/available-slots",
-                                "/review/get-all/**"
+                                "/review/get-all/**",
+                                "/user/forgot-password",
+                                "/doctor/**",
+                                "/department/get-all",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html",
+                                "/swagger-resources/**",
+                                "/bot/chat"
                         ).permitAll()
                         .requestMatchers("/doctor/request").hasRole("USER")
                         .requestMatchers(
@@ -46,8 +54,14 @@ public class SecurityConfig {
                                 ).hasRole("ADMIN")
                         .requestMatchers("/patient/update/**").hasAnyRole("ADMIN", "PATIENT")
                         .requestMatchers("/appointment/book").hasAnyRole("USER", "PATIENT")
-                        .requestMatchers("/patient/get-all").hasAnyRole("ADMIN", "DOCTOR")
-                        .requestMatchers("/review/evaluate").hasRole("PATIENT")
+                        .requestMatchers("/patient/get-all",
+                                "/appointment/update/**"
+                        ).hasAnyRole("ADMIN", "DOCTOR")
+                        .requestMatchers("/review/evaluate",
+                                "/patient/me",
+                                "/appointment/me"
+                        ).hasRole("PATIENT")
+                        .requestMatchers("/doctor/me").hasRole("DOCTOR")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(manager-> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -12,4 +12,6 @@ public interface PatientService {
     String updatePatient(User user, Long patientId, PatientDto patientDto);
 
     String deletePatient(Long patientId);
+
+    PatientDto getPatientProfile(User user);
 }

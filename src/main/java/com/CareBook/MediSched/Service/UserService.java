@@ -11,4 +11,5 @@ public interface UserService {
     Map<String, Object> authenticateUser(UserDto userDto);
 
 
+    String sendResetPasswordEmail(String email);
 }

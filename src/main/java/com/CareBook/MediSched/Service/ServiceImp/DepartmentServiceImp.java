@@ -6,6 +6,8 @@ import com.CareBook.MediSched.Service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class DepartmentServiceImp implements DepartmentService {
@@ -24,5 +26,10 @@ public class DepartmentServiceImp implements DepartmentService {
                 .build();
 
         return departmentRepository.save(newDepartment);
+    }
+
+    @Override
+    public List<Department> getAll() {
+        return departmentRepository.findAll();
     }
 }
