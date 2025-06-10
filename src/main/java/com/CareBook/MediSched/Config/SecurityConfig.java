@@ -59,7 +59,7 @@ public class SecurityConfig {
                                 "/doctor/update/**",
                                 "/department/createDepartment",
                                 "/patient/delete/**",
-                                "appointment/getBy-doctor"
+                                "/appointment/getBy-doctor"
                         ).hasRole("ADMIN")
 
                         // role PATIENT
