@@ -1,7 +1,6 @@
-
 import axios from 'axios';
 
-const API_BASE_URL = '/api';
+const API_BASE_URL = 'http://localhost:8080';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -19,7 +18,7 @@ export const authAPI = {
       delete api.defaults.headers.common['Authorization'];
     }
   },
-  
+
   login: (credentials) => api.post('/user/login', credentials),
   register: (userData) => api.post('/user/register', userData),
   forgotPassword: (email) => api.post('/user/forgot-password', { email }),
