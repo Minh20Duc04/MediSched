@@ -1,0 +1,63 @@
+🔐 1. Authentication Pages
+a. Register
+•	A form for new users to sign up.
+•	Sends a request to POST /user/register.
+b. Login
+•	A form to enter email and password.
+•	Sends a request to POST /user/login and stores the returned token.
+c. Forgot Password
+•	A form to input email for password recovery.
+•	Sends a request to POST /user/forgot-password.
+👨‍⚕️ 2. Doctor Pages
+a. Doctor Request Form
+•	A form to submit a request to become a doctor.
+•	Sends a request to POST /doctor/request.
+b. Admin – Manage Doctor Requests
+•	Displays the list of doctor requests from GET /doctor/get-all-requests.
+•	Allows admin to approve/reject via PUT /doctor/decide-request.
+c. Doctor Search
+•	A search form to find doctors.
+•	Calls GET /doctor/search and displays the results.
+d. Doctor Detail Page
+•	Displays detailed information about a doctor using GET /doctor/{id}.
+•	Includes reviews from GET /review/get-all/{doctorId}.
+e. Doctor Profile (Self)
+•	For logged-in doctors to view and update their own profiles.
+•	Uses GET /doctor/me and PUT /doctor/update/{doctorId}.
+🧑‍🤝‍🧑 3. Patient Pages
+a. Patient List (Admin/Doctor only)
+•	Displays patient data from GET /patient/get-all.
+b. Edit/Delete Patient
+•	Provides forms to update (PUT) or delete (DELETE) patient information.
+c. Patient Profile (Self)
+•	Displays the current user's profile using GET /patient/me.
+📅 4. Appointment Pages
+a. Book Appointment
+•	A form to select department, doctor, and available time slot.
+•	Uses GET /appointment/available-slots and sends request via POST /appointment/book.
+b. My Appointments
+•	Displays appointment history for the logged-in patient using GET /appointment/me.
+c. Doctor’s Appointments
+•	Displays appointment schedule for the logged-in doctor using GET /appointment/getBy-doctor.
+d. Update Appointment Status
+•	Allows doctors/admins to update appointment status via PUT /appointment/update/{id}.
+⭐ 5. Review Pages
+a. Submit Review
+•	A form for patients to submit a review for a doctor.
+•	Sends request to POST /review/evaluate.
+b. Doctor Reviews
+•	Lists reviews for a doctor using GET /review/get-all/{doctorId}.
+🏥 6. Department Pages
+a. Create Department (Admin only)
+•	A form to create a new department.
+•	Sends request to POST /department/createDepartment.
+b. Department List
+•	Displays all departments using GET /department/get-all.
+🤖 7. Chatbot Page
+a. Chatbot Interface
+•	A simple input field for user questions.
+•	Sends the question to POST /bot/chat and displays the response.
+🧭 8. Navigation & Layout
+•	Navigation bar with conditional rendering based on user roles.
+•	Footer component.
+•	Protected routes (e.g., using PrivateRoute) for authenticated or role-based access.
