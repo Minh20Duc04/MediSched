@@ -1,0 +1,4 @@
+modules = ["java-graalvm22.3", "dotnet-8.0", "postgresql-17", "nodejs-with-prybar-18"]
+
+[nix]
+channel = "stable-24_05"
