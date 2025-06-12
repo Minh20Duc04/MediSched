@@ -2,3 +2,19 @@ modules = ["java-graalvm22.3", "dotnet-8.0", "postgresql-17", "nodejs-with-pryba
 
 [nix]
 channel = "stable-24_05"
+
+[workflows]
+runButton = "Start Frontend"
+
+[[workflows.workflow]]
+name = "Start Frontend"
+author = 43508991
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
