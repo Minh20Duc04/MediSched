@@ -68,7 +68,18 @@ export const adminAPI = {
 // Review API
 export const reviewAPI = {
   getReviewsByDoctor: (doctorId) => api.get(`/review/get-all/${doctorId}`),
-  createReview: (reviewData) => api.post('/review/create', reviewData),
+  createReview: (reviewData) => api.post('/review/evaluate', reviewData),
+};
+
+// Chatbot API
+export const chatbotAPI = {
+  sendMessage: (message) => api.post('/bot/chat', { message }),
+};
+
+// Department API (update with create method)
+export const departmentAPI = {
+  getAllDepartments: () => api.get('/department/get-all'),
+  createDepartment: (data) => api.post('/department/createDepartment', data),
 };
 
 export default api;

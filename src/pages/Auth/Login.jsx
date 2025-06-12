@@ -103,6 +103,9 @@ const Login = () => {
               {loading ? 'Signing In...' : 'Sign In'}
             </Button>
             <Box textAlign="center">
+              <Link component={RouterLink} to="/forgot-password" variant="body2" sx={{ display: 'block', mb: 1 }}>
+                Forgot your password?
+              </Link>
               <Link component={RouterLink} to="/register" variant="body2">
                 Don't have an account? Sign Up
               </Link>

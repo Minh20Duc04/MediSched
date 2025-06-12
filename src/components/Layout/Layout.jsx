@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button, Box, Container } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
@@ -31,11 +30,14 @@ const Layout = ({ children }) => {
           >
             MediSched
           </Typography>
-          
+
           <Button color="inherit" component={Link} to="/doctors">
-            Find Doctors
-          </Button>
-          
+              Find Doctors
+            </Button>
+            <Button color="inherit" component={Link} to="/chatbot">
+              Medical Assistant
+            </Button>
+
           {isAuthenticated ? (
             <>
               <Button color="inherit" component={Link} to="/my-appointments">
@@ -50,9 +52,17 @@ const Layout = ({ children }) => {
                 </Button>
               )}
               {user?.role === 'ADMIN' && (
-                <Button color="inherit" component={Link} to="/admin">
-                  Admin
-                </Button>
+                <>
+                  <Button color="inherit" component={Link} to="/admin">
+                    Admin Dashboard
+                  </Button>
+                  <Button color="inherit" component={Link} to="/patients">
+                    Patients
+                  </Button>
+                  <Button color="inherit" component={Link} to="/departments">
+                    Departments
+                  </Button>
+                </>
               )}
               <Button color="inherit" onClick={handleLogout}>
                 Logout
@@ -70,7 +80,7 @@ const Layout = ({ children }) => {
           )}
         </Toolbar>
       </AppBar>
-      
+
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
         {children}
       </Container>

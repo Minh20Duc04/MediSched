@@ -19,6 +19,11 @@ import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorRequest from './pages/Doctor/DoctorRequest';
 import AdminDashboard from './pages/Admin/AdminDashboard';
 import PatientProfile from './pages/Patient/PatientProfile';
+import PatientList from './pages/Patient/PatientList';
+import ForgotPassword from './pages/Auth/ForgotPassword';
+import SubmitReview from './pages/Review/SubmitReview';
+import DepartmentManagement from './pages/Department/DepartmentManagement';
+import ChatbotPage from './pages/Chatbot/ChatbotPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const theme = createTheme({
@@ -43,7 +48,9 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/doctors" element={<DoctorSearch />} />
+              <Route path="/chatbot" element={<ChatbotPage />} />
               <Route path="/doctor/:id" element={<DoctorProfile />} />
               <Route 
                 path="/book-appointment/:doctorId" 
@@ -90,6 +97,30 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <PatientProfile />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/submit-review/:doctorId" 
+                element={
+                  <ProtectedRoute>
+                    <SubmitReview />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/patients" 
+                element={
+                  <ProtectedRoute requiredRole="ADMIN">
+                    <PatientList />
+                  </ProtectedRoute>
+                } 
+              />
+              <Route 
+                path="/departments" 
+                element={
+                  <ProtectedRoute requiredRole="ADMIN">
+                    <DepartmentManagement />
                   </ProtectedRoute>
                 } 
               />

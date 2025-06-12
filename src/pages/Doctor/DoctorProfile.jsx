@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import {
   Container,
@@ -84,16 +83,16 @@ const DoctorProfile = () => {
                   </Typography>
                 </Box>
               </Box>
-              
+
               <Divider sx={{ my: 2 }} />
-              
+
               <Typography variant="h6" gutterBottom>
                 About
               </Typography>
               <Typography variant="body1" paragraph>
                 {doctor.description || 'Experienced medical professional dedicated to providing quality healthcare.'}
               </Typography>
-              
+
               <Typography variant="h6" gutterBottom>
                 Contact Information
               </Typography>
@@ -103,7 +102,7 @@ const DoctorProfile = () => {
             </CardContent>
           </Card>
         </Grid>
-        
+
         {/* Action Panel */}
         <Grid item xs={12} md={4}>
           <Card>
@@ -116,16 +115,26 @@ const DoctorProfile = () => {
               </Typography>
               <Button
                 variant="contained"
-                fullWidth
                 size="large"
                 component={Link}
                 to={`/book-appointment/${doctor.id}`}
+                fullWidth
+                sx={{ mb: 2 }}
               >
-                Book Now
+                Book Appointment
+              </Button>
+              <Button
+                variant="outlined"
+                size="large"
+                component={Link}
+                to={`/submit-review/${doctor.id}`}
+                fullWidth
+              >
+                Write a Review
               </Button>
             </CardContent>
           </Card>
-          
+
           {/* Reviews */}
           <Card sx={{ mt: 2 }}>
             <CardContent>
