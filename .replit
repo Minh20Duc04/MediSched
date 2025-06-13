@@ -1,0 +1,46 @@
+modules = ["java-graalvm22.3", "dotnet-8.0", "postgresql-17", "nodejs-with-prybar-18"]
+
+[nix]
+channel = "stable-24_05"
+
+[workflows]
+runButton = "Start Full Stack"
+
+[[workflows.workflow]]
+name = "Start Frontend"
+author = 43508991
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm install"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+
+[[workflows.workflow]]
+name = "Start Backend"
+author = 43508991
+mode = "sequential"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./mvnw spring-boot:run"
+
+[[workflows.workflow]]
+name = "Start Full Stack"
+author = 43508991
+mode = "parallel"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "./mvnw spring-boot:run"
+
+[[workflows.workflow.tasks]]
+task = "shell.exec"
+args = "npm run dev"
+
+[[ports]]
+localPort = 5000
+externalPort = 80
