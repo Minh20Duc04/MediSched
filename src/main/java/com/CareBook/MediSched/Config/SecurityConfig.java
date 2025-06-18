@@ -58,8 +58,7 @@ public class SecurityConfig {
                                 "/doctor/decide-request",
                                 "/doctor/update/**",
                                 "/department/createDepartment",
-                                "/patient/delete/**",
-                                "/appointment/getBy-doctor"
+                                "/patient/delete/**"
                         ).hasRole("ADMIN")
 
                         // role PATIENT
@@ -70,7 +69,9 @@ public class SecurityConfig {
                         ).hasRole("PATIENT")
 
                         // role DOCTOR
-                        .requestMatchers("/doctor/me").hasRole("DOCTOR")
+                        .requestMatchers("/doctor/me",
+                                "/appointment/getBy-doctor" //getAllApointmentsByDoc
+                                ).hasRole("DOCTOR")
 
                         // chung role
                         .requestMatchers("/patient/update/**").hasAnyRole("ADMIN", "PATIENT")
